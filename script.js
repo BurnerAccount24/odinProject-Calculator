@@ -15,7 +15,7 @@ let firstNum = '';
 let secondNum = '';
 let operaterType = '';
 
-function operate(firstNum, operaterType, secondNum) {
+function runOperater(firstNum, operaterType, secondNum) {
 	if (operaterType === '+') {
 		return add(firstNum, secondNum);
 	} else if (operaterType === '-') {
@@ -35,25 +35,30 @@ let operators = document.querySelectorAll('.opeator');
 let result = document.querySelector('.result');
 let updatedNumVal = ''; // accumulate the string type of the clicked num btns before assigning them to either firstNum or secondNum but after turning them to numbers
 function populateDisplay() {
-	numBtns.forEach((numBtns) =>
-		numBtns.addEventListener('click', () => {
-			updatedNumVal += numBtns.innerText;
+	numBtns.forEach(numBtn =>
+		numBtn.addEventListener('click', () => {
+			updatedNumVal += numBtn.innerText;
 			displayVal.innerText = updatedNumVal;
 		})
 	);
 
-	operators.forEach((operate) =>
+	operators.forEach(operate =>
 		operate.addEventListener('click', () => {
+			if (firstNum !== '' && operaterType !== '') {
+				firstNum = runOperater(firstNum, operaterType, Number(updatedNumVal));
+				displayVal.innerText = firstNum;
+			} else {
+				firstNum = Number(updatedNumVal);
+			}
 			operaterType = operate.innerText;
-			firstNum = Number(updatedNumVal);
 			updatedNumVal = '';
 		})
 	);
 
 	result.addEventListener('click', () => {
 		secondNum = Number(updatedNumVal);
-		displayVal.innerText = operate(firstNum, operaterType, secondNum);
-		updatedNumVal = '';
+		displayVal.innerText = runOperater(firstNum, operaterType, secondNum);
+		// updatedNumVal = '';
 	});
 }
 
